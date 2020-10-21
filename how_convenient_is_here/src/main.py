@@ -44,9 +44,15 @@ def main():
                 site.points.to_excel(
                     writer, encoding="utf_8_sig", sheet_name="points")
             print("Detail Infomation is saved to 'results'")
+    except NameError as e:
+        print(
+            f"error message: {e}. Make sure all require modules are imported in correct name.")
+    except ValueError as e:
+        print(
+            f"error message: {e}. Make sure your API key is correct.")
     except Exception as e:
         print(f"error message: {e}")
-        print("500 - Server Error. Please provide your error message/config.ini to the author.")
+        print("Other error. Please provide your error message/config.ini to the author.")
 
 
 if __name__ == '__main__':

@@ -50,10 +50,10 @@ class ConvenienceEvaluation():
         # haversine formula
         diff_lat = place_lat - here_lat
         diff_lon = place_lon - here_lon
-        # 圓心角 Central angle
+        # central angle
         angle = 2 * asin(sqrt(sin(diff_lat/2)**2 + cos(here_lon)
                               * cos(place_lon) * sin(diff_lon/2)**2))
-        # Radius of earth in kilometers is 6371
+        # radius of earth in kilometers is 6371
         res = 6371 * angle * 1000
         res = round(res, 3)
         return res
@@ -101,6 +101,9 @@ class ConvenienceEvaluation():
         for each_type in grading_manual:
             each_type_count = sum(
                 self.places_table["types"].apply(lambda x: each_type in x))
+            # inverse distance Weighting for restaurant/cafe
+            if each_type in ["restaurant", "cafe"] and bool(grading_manual[each_type]) == 0:
+                grading_manual[each_type] = 'self.places_table["rating"] / self.places_table["distance"] ** 0.5'
             each_type_point = round(sum(self.places_table["types"].apply(
                 lambda x: each_type in x) * eval(grading_manual[each_type])), 2)
             each_type_point = each_type_point if each_type_point <= 10 else 10
