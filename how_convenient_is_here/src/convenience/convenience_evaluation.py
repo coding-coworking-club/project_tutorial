@@ -1,17 +1,17 @@
-import googlemaps
-from datetime import datetime
-import requests
 import json
-import time
-import pandas as pd
-import numpy as np
-from math import radians, cos, sin, asin, sqrt
 import math
-import openpyxl
 import os
+import random
+import time
+from datetime import datetime
+from math import asin, cos, radians, sin, sqrt
+
 import gmaps
 import gmaps.datasets
-import random
+import googlemaps
+import numpy as np
+import pandas as pd
+import requests
 
 
 class ConvenienceEvaluation():
@@ -25,17 +25,17 @@ class ConvenienceEvaluation():
     }
 
     def __init__(self, address, key):
-        # 定義實體屬性
+        # define instance attributes
         self.gmap_client = googlemaps.Client(key=key)
-        payload = {"address": self.address, "key": self.key}
-        re = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params=payload)
+        payload = {"address": address, "key": key}
+        re = requests.get(
+            "https://maps.googleapis.com/maps/api/geocode/json", params=payload)
         self.place_info = json.loads(re.text)
         self.latitude = self.place_info['results'][0]['geometry']['location']['lat']
         self.longitude = self.place_info['results'][0]['geometry']['location']['lng']
         self.places_table = pd.DataFrame()
 
     def dist_calculator(self, place_lat, place_lon):
-        # 算兩點之間的距離
         """
         Calculate the great circle distance between two points
         on the earth (specified in decimal degrees)
@@ -73,7 +73,7 @@ class ConvenienceEvaluation():
         The maximum allowed radius is 50 000 meters. Note that radius must not be included if rankby=distance 
         (described under Optional parameters below) is specified.
         """
-        position = str(self.latitude) + "," + str(self.longitude)
+        position = f'{self.latitude},{self.longitude}'
         places_result = []
         for each_type in self.search_types:
             places_info = self.gmap_client.places_nearby(
@@ -94,39 +94,17 @@ class ConvenienceEvaluation():
         self.places_table["latitude"] = geo_locate.apply(lambda x: x["lat"])
         self.places_table["longitude"] = geo_locate.apply(lambda x: x["lng"])
         self.places_table["rating"] = self.places_table["rating"].fillna(0)
+        self.places_table.sort_values(by=['distance'], inplace=True)
 
-    def giving_weight(self,
-                      w_restaurant='self.places_table["rating"] / self.places_table["distance"] ** 0.5',
-                      w_cafe='self.places_table["rating"] / self.places_table["distance"] ** 0.5',
-                      w_convenience_store='2',
-                      w_supermarket='2',
-                      w_bus_station='2',
-                      w_subway_station='10',
-                      w_movie_theater='4',
-                      w_gym='3',
-                      w_park='3',
-                      w_school='2'):
-        self.grading_manual = {
-            "restaurant": w_restaurant,
-            "cafe": w_cafe,
-            "convenience_store": w_convenience_store,
-            "supermarket": w_supermarket,
-            "bus_station": w_bus_station,
-            "subway_station": w_subway_station,
-            "movie_theater": w_movie_theater,
-            "gym": w_gym,
-            "park": w_park,
-            "school": w_school
-        }
-
-    def get_point(self):
+    def get_point(self, grading_manual):
         self.points = {}
-        for _type in self.grading_manual:
-            _type_count = sum(
-                self.places_table["types"].apply(lambda x: _type in x))
-            _type_point = round(sum(self.places_table["types"].apply(
-                lambda x: _type in x) * eval(self.grading_manual[_type])), 2)
-            _type_point = _type_point if _type_point <= 10 else 10
-            self.points[_type] = {"count": _type_count, "point": _type_point}
+        for each_type in grading_manual:
+            each_type_count = sum(
+                self.places_table["types"].apply(lambda x: each_type in x))
+            each_type_point = round(sum(self.places_table["types"].apply(
+                lambda x: each_type in x) * eval(grading_manual[each_type])), 2)
+            each_type_point = each_type_point if each_type_point <= 10 else 10
+            self.points[each_type] = {
+                "count": each_type_count, "point": each_type_point}
         self.points = pd.DataFrame.from_dict(self.points).T
-        self.total = sum(self.points["point"])
+        self.total = round(sum(self.points["point"]), 2)
