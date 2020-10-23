@@ -98,14 +98,16 @@ class ConvenienceEvaluation():
 
     def get_point(self, grading_manual):
         self.points = {}
+        for each_type in ["restaurant", "cafe"]:
+            if each_type not in grading_manual:
+                # inverse distance weighting for restaurant/cafe
+                grading_manual[each_type] = self.places_table["rating"] / \
+                    self.places_table["distance"] ** 0.5
         for each_type in grading_manual:
             each_type_count = sum(
                 self.places_table["types"].apply(lambda x: each_type in x))
-            # inverse distance weighting for restaurant/cafe
-            if each_type in ["restaurant", "cafe"] and bool(grading_manual[each_type]) == 0:
-                grading_manual[each_type] = 'self.places_table["rating"] / self.places_table["distance"] ** 0.5'
             each_type_point = round(sum(self.places_table["types"].apply(
-                lambda x: each_type in x) * eval(grading_manual[each_type])), 2)
+                lambda x: each_type in x) * grading_manual[each_type]), 2)
             each_type_point = each_type_point if each_type_point <= 10 else 10
             self.points[each_type] = {
                 "count": each_type_count, "point": each_type_point}

@@ -20,10 +20,8 @@ def main():
             "INTERESTED_FIELDS") if bool(value)]
         site.type_mapping(fields=fields)
         site.search(radius=config["SEARCH_RANGE"]["RADIUS"])
-        types = [
-            each_type for field in fields for each_type in site.search_fields[field]]
-        grading_manual = {
-            each_type: config["GRADING_MANUAL"][each_type.upper()] for each_type in types}
+        grading_manual = {key: float(value)
+                          for key, value in config["GRADING_MANUAL"].items()}
         site.get_point(grading_manual=grading_manual)
         end_time = time.time()
         print(f"Site you'd like to know: {config['GOOGLE_MAPS']['ADDRESS']}")
@@ -50,6 +48,9 @@ def main():
     except ValueError as e:
         print(
             f"error message: {e}. Make sure your API key is correct.")
+    except KeyError as e:
+        print(
+            f"error message: {e}. Make sure you give all parameters for types you'd like to consider in.")
     except Exception as e:
         print(f"error message: {e}")
         print("Other error. Please provide your error message/config.ini to the author.")
