@@ -41,10 +41,9 @@ This tool helps you to evaluate how convenient it is easily. Just provide site a
         - for `GRADING_MANUAL` :
 
             Give different weights by yourself.
-            For `RESTAURANT` and `CAFE`, we use rating/√distance (inverse distance weighting)
-            by default.
+            For `RESTAURANT` and `CAFE`, we use rating/√distance (inverse distance weighting).
 
-        - for `SEARCH_RANGE`
+        - for `SEARCH_RANGE` :
 
             Fill in radius in meters.
 
