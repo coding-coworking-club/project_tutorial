@@ -13,7 +13,7 @@ def main():
     try:
         start_time = time.time()
         config = configparser.ConfigParser()
-        config.read("src/convenience/config.ini", encoding="utf-8")
+        config.read("src/config.ini", encoding="utf-8")
         site = ConvenienceEvaluation(
             address=config['GOOGLE_MAPS']["ADDRESS"], key=config["GOOGLE_MAPS"]["KEY"])
         fields = [field for field, value in config.items(
