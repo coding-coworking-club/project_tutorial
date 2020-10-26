@@ -60,9 +60,9 @@ This tool helps you to evaluate how convenient it is easily. Just provide site a
 ├── src
 │   ├── convenience
 │   │   ├─ _init_.py
-│   │   ├─ config.ini
 │   │   └─ conveninece_evaluation.py
-│   └── main.py
+│   ├── main.py
+│   └── config.ini
 ├── Pipfile
 ├── Pipfile.lock
 └── README.md
