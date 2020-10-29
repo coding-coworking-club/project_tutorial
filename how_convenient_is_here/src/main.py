@@ -7,6 +7,7 @@ from datetime import date
 import pandas as pd
 
 from convenience.convenience_evaluation import ConvenienceEvaluation
+from exceptions import APIKeyError
 
 
 def main():
@@ -14,6 +15,8 @@ def main():
         start_time = time.time()
         config = configparser.ConfigParser()
         config.read("src/config.ini", encoding="utf-8")
+        if config["GOOGLE_MAPS"]["KEY"] == 'PASTE_YOUR_KEY_HERE':
+            raise APIKeyError
         site = ConvenienceEvaluation(
             address=config['GOOGLE_MAPS']["ADDRESS"], key=config["GOOGLE_MAPS"]["KEY"])
         fields = [field for field, value in config.items(
@@ -45,7 +48,7 @@ def main():
     except NameError as e:
         print(
             f"error message: {e}. Make sure all require modules are imported in correct name.")
-    except ValueError as e:
+    except APIKeyError as e:
         print(
             f"error message: {e}. Make sure your API key is correct.")
     except KeyError as e:
