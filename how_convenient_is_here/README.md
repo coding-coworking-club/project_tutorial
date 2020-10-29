@@ -23,7 +23,7 @@ This tool helps you to evaluate how convenient it is easily. Just provide site a
 
 3. Update the configaration file
 
-    Find config.ini in convenience folder then edit it if necessary.
+    Find `src/config.ini` in the folder named `convenience` then edit it if necessary.
     - Get Google API key
 
         <https://developers.google.com/maps/documentation/maps-static/get-api-key>
@@ -56,6 +56,7 @@ This tool helps you to evaluate how convenient it is easily. Just provide site a
 
 ## Project Orginaztion
 
+```
 ├── results
 ├── src
 │   ├── convenience
@@ -66,3 +67,4 @@ This tool helps you to evaluate how convenient it is easily. Just provide site a
 ├── Pipfile
 ├── Pipfile.lock
 └── README.md
+```
