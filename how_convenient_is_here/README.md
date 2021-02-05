@@ -1,4 +1,4 @@
-# Convience Evaluation
+# Convenience Evaluation
 
 This tool helps you to evaluate how convenient it is easily. Just provide site address and radius, it brings that information around the site and point which reflects the convenience of site.
 
