@@ -1,0 +1,2 @@
+# 忽略 result ⽬錄下的檔案
+results/*.xlsx
