@@ -8,6 +8,12 @@ verify_ssl = true
 [packages]
 selenium = "*"
 cookiecutter = "*"
+beautifulsoup4 = "*"
+pandas = "*"
+cn2an = "*"
+hanziconv = "*"
+logger = "*"
+xlsxwriter = "*"
 
 [requires]
 python_version = "3.8"
