@@ -1,7 +1,6 @@
 import os
 import re
 import time
-from time import sleep
 
 import requests
 from bs4 import BeautifulSoup, Comment
@@ -19,10 +18,10 @@ def first_query_page(crime, place, path):
     driver.get(url)
 
     # find element and simulate the click
-    driver.find_element_by_name('jud_sys').click()
-    content = driver.find_element_by_name('jud_kw')
+    driver.find_element_by_name("jud_sys").click()
+    content = driver.find_element_by_name("jud_kw")
     content.send_keys(crime)
-    driver.find_element_by_name('ctl00$cp_content$btnQry').click()
+    driver.find_element_by_name("ctl00$cp_content$btnQry").click()
     court = driver.find_element_by_partial_link_text(place)
     actions = ActionChains(driver).move_to_element(court).key_down(Keys.CONTROL).key_down(
         Keys.SHIFT).click(court).key_up(Keys.CONTROL).key_up(Keys.SHIFT)
@@ -40,7 +39,7 @@ def first_query_page(crime, place, path):
 
 def get_bs4_content(url):
     res = requests.get(url, verify=False)
-    soup = BeautifulSoup(res.text, 'html.parser')
+    soup = BeautifulSoup(res.text, "html.parser")
     return soup
 
 
@@ -55,5 +54,5 @@ def get_main_text(content):
 
 def get_full_text(content):
     nodes = content.find("body").find_all("td")
-    full_text = ','.join([node.text for node in nodes])
+    full_text = ",".join([node.text for node in nodes])
     return full_text

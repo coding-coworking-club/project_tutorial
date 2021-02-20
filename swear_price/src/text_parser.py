@@ -21,15 +21,13 @@ def char_to_number(word):
             "參": "三",
             "叄": "三"
         }
-        word = f"一{word}" if word[0] in '十拾百佰千仟萬億兆' else word
+        word = f"一{word}" if word[0] in "十拾百佰千仟萬億兆" else word
         char_list = [normal_char_dict[char]
                      if char in normal_char_dict else char for char in word]
-        word = ''.join(char_list)
+        word = "".join(char_list)
         number = cn2an.cn2an(HanziConv.toSimplified(word),  "smart")
-        return(number)
+        return number
     except ValueError as e:
-        logging.error(f"error message: {e}")
         logging.error(
-            "please refine the script of function of 'char_to_number'")
-        number = 0
-        return(number)
+            f'error message: {e}. Please refine the script of function of "char_to_number"')
+        return 0

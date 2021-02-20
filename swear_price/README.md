@@ -1,57 +1,63 @@
-swear_price
-==============================
+# Swear Price
 
-A web scraper project for investigating how much does it cost when you swear words 
+A web scraper project for investigating how much it costs when you swear words.
 
-Project Organization
-------------
+## Getting Started
 
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+1. Initialize a virtualenv to manage all required packages
 
+    ```bash
+    # ~/swear_price/
+    pip3 install pipenv
+    pipenv --python 3
+    ```
 
---------
+2. Install packages
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+   Install all required packages based on `Pipfile`.
+
+   ```bash
+   # ~/swear_price/
+   pipenv install
+   ```
+
+3. Update the configaration file
+
+    Find `src/config.ini` (in the folder named `src`) then edit it if necessary.
+
+    - Change the default value
+
+        - for `WEB_DRIVER` :
+
+            Fill in your own web-driver absolute path.
+
+        - for `FILTER` :
+
+            Based on the format of [司法院法學資料檢索系統-裁判書查詢](https://law.judicial.gov.tw/FJUD/default_AD.aspx), `CRIME` is the keyword for "全文內容"; `PLACE` helps you choose court.
+
+            `PAGE_LIMIT` is the maximum number of pages which will be scraped.
+
+            After raw data is scraped, only the articles with keyword of `TERM` will be marked as "TRUE", which indicates that an article contains the swear words you interests in.
+
+4. Execute the project
+
+    ```bash
+    # ~/swear_price/
+    pipenv run python src/main.py
+    ```
+
+## Project Orginaztion
+
+```
+├── data
+├── reports
+├── src
+│   ├── init_.py
+│   ├── scraper.py
+│   ├── text_parser.py
+│   ├── main.py
+│   └── config.ini
+├── Pipfile
+├── Pipfile.lock
+└── README.md
+```
