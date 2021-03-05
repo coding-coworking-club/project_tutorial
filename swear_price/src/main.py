@@ -10,9 +10,16 @@ import pandas as pd
 import urllib3
 import xlsxwriter
 
-from scraper import (first_query_page, get_bs4_content, get_full_text,
-                     get_main_text)
-from text_parser import char_to_number, get_parsed_result
+from scraper import (
+    first_query_page,
+    get_bs4_content,
+    get_full_text,
+    get_main_text
+)
+from text_parser import (
+    char_to_number,
+    get_parsed_result
+)
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -100,11 +107,14 @@ def main():
         avg_string = f'costs_NTD {avg_price_of_swear}'
     else:
         avg_string = "no_records"
+
     report_path = os.path.join(
         project_dir, f'../reports/{file_prefix}_{avg_string}_{query_date}.xlsx')
     with pd.ExcelWriter(report_path) as writer:
         report.to_excel(writer, index=False, header=True,
                         encoding="utf_8_sig", engine="xlsxwriter")
+        logging.info(
+            f"File {file_prefix}_{avg_string}_{query_date}.xlsx is in report folder.")
 
 
 if __name__ == '__main__':
