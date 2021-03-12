@@ -14,7 +14,7 @@ import pandas as pd
 import requests
 
 
-class ConvenienceEvaluation():
+class ConvenienceEvaluation:
     # fields_to_types
     search_fields = {
         "food": ["restaurant", "cafe"],
