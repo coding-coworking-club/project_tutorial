@@ -18,7 +18,7 @@ This tool helps you to evaluate how convenient it is easily. Just provide site a
 
    ```bash
    # ~/how_convenient_is_here/
-   pipenv install
+   pipenv sync
    ```
 
 3. Update the configaration file

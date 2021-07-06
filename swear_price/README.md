@@ -18,7 +18,7 @@ A web scraper project for investigating how much it costs when you swear words.
 
    ```bash
    # ~/swear_price/
-   pipenv install
+   pipenv sync
    ```
 
 3. Update the configaration file
