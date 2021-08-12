@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+gmaps = "*"
+googlemaps = "*"
+numpy = "*"
+pandas = "*"
+requests = "*"
+configparser = "*"
+openpyxl = "*"
+
+[requires]
+python_version = "3.8"
