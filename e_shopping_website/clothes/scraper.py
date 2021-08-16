@@ -1,81 +1,137 @@
 import os
+import sys
 from selenium import webdriver
 from time import sleep
 from bs4 import BeautifulSoup
-import requests
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+class AbsInterface:
+	def __init__(self, classname=None):
+		self.process = classname
+	
+	def run(self):
+		self.process().run()
+
+# class Scraper(ABC):
+
+# 	def set_option(self):
+# 		options = Options()
+# 		options.add_argument("--disable-notifications")
+
+#     def set_chromedriver(self):
+#         current_directory = self.file_path()
+#         chromedriver_path = os.path.join(current_directory, "resource/chromedriver")
+#         driver = webdriver.Chrome(executable_path=chromedriver_path, options=options)
+# 		driver.implicitly_wait(10) # seconds
+    
+#     def file_path(self):
+#         file_path = os.path.abspath(os.getcwd())
+#         return file_path
+
+# 	def run(self):
+# 		pass
+class Scraper:
 
 
-def file_path():
-	file_path = os.path.abspath(os.getcwd())
-	return file_path
+    def __init__(self):
 
-def tokyo(product_name):
-    current_directory = file_path()
-    driver = webdriver.Chrome(executable_path=f"{current_directory}/clothes/chromedriver")
+        self.options = self._set_options()
+        self.driver = self._set_driver
 
-    tokyodata = {}
-    buy_home = "http://tokichoi.91app.com/"
-    option = webdriver.ChromeOptions()
-    driver.get(buy_home)
+        file_path = os.path.abspath(os.getcwd())
+        chromedriver_path = os.path.join(file_path, "resource/chromedriver")
 
-    A = driver.find_element_by_class_name("ns-search-input")
-    A.send_keys("\""+"product_name"+"\"")
-    A.send_keys("\n")
-    sleep(1)
+    def _set_options(self):
+        self.options = webdriver.ChromeOptions()
+        self.options.add_argument("--disable-notifications")
+        self.options.add_argument("--headless")
+
+    def _set_driver(self):
+        self.driver = webdriver.Chrome(executable_path=chromedriver_path, options=self.options)
+
+    def get_header(cls):
+        cls.title = cls.driver.get(cls.home)
+        return cls.title
+    
+    def scroll_down(self):
+        for times in range(1, 10):
+            self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+            sleep(1)
+            print(f"scroll down {times} times")
+    
+    def get_all_item_page(self):
+        pass
+
+    def get_item_list(self):
+        pass
+
+    def get_item_list(self):
+        pass
+
+    def get_item_name(self):
+        pass
+
+    def get_item_picture(self):
+        pass
 
 
-    #把本頁搜尋商品的網址截下來
-    clothes = BeautifulSoup(driver.page_source,"html.parser")
-    movie = clothes.find_all("li",{"class":"cabinet-li blind-li cabinet-in-pc"})
-    finding = [] 
-    for goods in movie:
-        finding.append(goods.a["href"])
+    def get_item_color(self):
+        pass
 
-    #新的分頁
-    num = 0
-    for i in finding:
-        num+=1
-        new_url = "http://tokichoi.91app.com"+i
-        driver.get(new_url)
-        sleep(0.5)
-        #爬詳細的圖文
-        clothes = BeautifulSoup(driver.page_source,"html.parser")
-        collect_data = []
-        try:
-            picture = "http://"+clothes.find("figure",{"class":"large-image-frame"}).div.a.img["ng-src"].strip("//")
-        except:
-            picture = "Not found"
-        picture_name = clothes.find("h1",{"class":"salepage-title"}).text.strip()
-        if "】" in picture_name:
-            picture_name = picture_name.split("】")[1].split("(")[0]
-        else:
-            picture_name = picture_name.split("(")[0]
-        
-        clothes_price = clothes.find("div",{"class":"salepage-price"}).div.span.text.strip()[3:].replace(",","")
-        picture_color_size = clothes.find_all("script")
-        for a in picture_color_size:
-            if "window.ServerRenderData"  in a.text:
-                s = a
-                break
-        clothes_color = s.text.strip().split("DisplayPropertyName")[1][3:].split("}")[0][0:-1]
-        try:
-            clothes_size = s.text.strip().split("DisplayPropertyName")[2][3:].split("}")[0][0:-1]
-        except IndexError:
-            clothes_size = "F"
-        collect_data.append("東京著衣,"+picture_name)
-        collect_data.append(picture)
-        collect_data.append(clothes_price)
-        collect_data.append(clothes_color)
-        collect_data.append(clothes_size)
-        collect_data.append(new_url)
-        idnumber = "tokyo"+"%03d"%num
-        tokyodata[idnumber] = collect_data
-        collect_data = ["Tokichoi",idnumber,int(clothes_price)]
-        # with open(id_price_file, 'a', newline='') as csvfile:
-        #         writer = csv.writer(csvfile)
-        #         writer.writerow(collect_data)
-        # csvfile.close()
-    driver.close()
-    return tokyodata
+    def get_item_size(self):
+        pass
 
-tokyo("clothes")
+
+class MIU(Scraper):
+
+    def __init__(self, home_url) -> None:
+        self.home = home_url
+        super().__init__()
+
+    def get_all_item_page(self):
+        search_input = self.driver.find_element_by_class_name("nav-menu-link")
+        print("first text", search_input.text)
+        print(f"click {search_input.text}")
+        search_input.click()
+        search_input = self.driver.find_element_by_class_name("icon-slim-arrow-down")
+        print(f"click {search_input.text}")
+        search_input.click()
+        search_input = self.driver.find_element_by_class_name("category-level1")
+        search_input = self.driver.find_element_by_class_name("category-menu-item-link")
+        print("second text", search_input.text)
+        print(f"click {search_input.text}")
+        search_input.click()
+
+    def get_item_list(self):
+        pass
+
+    def get_item_list(self):
+        pass
+
+    def get_item_name(self):
+        pass
+
+    def get_item_picture(self):
+        pass
+
+    def get_item_color(self):
+        pass
+
+    def get_item_size(self):
+        pass
+
+home = "https://www.miu-star.com.tw/"
+scrpaer_miu = MIU(home)
+title = scrpaer_miu.get_header()
+print(title)
+scrpaer_miu.get_all_item_page()
+scrpaer_miu.scroll_down()
+
+
+# ProductA = Scraper()
+
+# create_product_a = AbsInterface()
+# create_product_a.process = ProductA
+# create_product_a.run()
