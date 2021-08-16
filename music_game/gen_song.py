@@ -1,3 +1,12 @@
+"""
+source coe全流程
+mainwin().switch_frame() 切換視窗
+mainwin().__init__() 開啟Start_Page
+Start_page -> Menu_Page / Rule_Page -> choose theme -> choose song
+-> songplay -> wrong / bingo page -> 滿分後完成遊戲
+"""
+
+
 import tkinter as tk
 from song_play import Songplay
 import random
