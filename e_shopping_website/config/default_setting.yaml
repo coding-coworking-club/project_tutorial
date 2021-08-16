@@ -1,0 +1,9 @@
+required:
+    # chrome driver:
+    - CHROMEDRIVER_PATH
+    - HOME_PAGE
+
+parameters:
+    ##### chrome driver #####
+    "CHROMEDRIVER_PATH": "resource/chromedriver"
+    "HOME_PAGE": "http://tokichoi.91app.com/"
