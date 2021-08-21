@@ -2,10 +2,9 @@ import os
 from models import CallDatabase
 from imgurpython import ImgurClient
 
-def photo(data_activity, photo_content, user_id, activity_name, imgur_config):
-
-    init_condition = ["condition = 'initial'", f"user_id = {user_id}"]
-    if data_activity and None in data_activity and data_activity.index(None) == 11:
+def photo(photo_content, imgur_config, activity_info, init_condition, user_id):
+    if activity_info and None in activity_info and activity_info.index(None) == 11:
+        activity_name = activity_info[1]
         #把圖片存下來並傳上去
         file_path = f"tmp/{user_id}_{activity_name}.png"
         with open(file_path, "wb") as tf:

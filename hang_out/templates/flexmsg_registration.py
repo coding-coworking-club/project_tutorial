@@ -1,12 +1,5 @@
-# -*- coding: utf-8 -*-
-
 from linebot.models import *
-import datetime as dt
-import json
-from templates import flexmsg_g
-
-columns = ["name", "phone"]
-columns_text = ["姓名", "電話"]            
+from templates import flexmsg_activity       
 
 def quick_reply_button(activity_type):
     quick_reply_button = QuickReplyButton(
@@ -56,7 +49,7 @@ def page_button(new_page, activity_type, i):
     page_button = ButtonComponent(
         action = PostbackAction(
             label = new_page,
-            data = f"newPage_{activity_type}_{i}",
+            data = f"newPage_{activity_type}_{i}_",
             display_text = new_page
         ),
         height = "sm",
@@ -174,8 +167,6 @@ def carousel(data, activity_type, i = 0):
                 link = "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip11.jpg"
             else:
                 link = f"{photo}"
-                
-            print("相片連結 = ", photo, "link = ", link)
 
             main = BubbleContainer(
                 size = "kilo",
@@ -277,7 +268,7 @@ def more_info_content(activity_info):
 
     more_info_content = []
     for i in [0, 1, 2, 4, 7, 8, 9, 10, 12]:    
-        text, info = flexmsg_g.columns_text[i], activity_info[i]
+        text, info = flexmsg_activity.columns_text[i], activity_info[i]
         if i == 3:
             info = activity_dt    
         more_info_content.append(info_text(text, info))  
@@ -304,81 +295,6 @@ def more_info(activity_info, activity_id):
     )
     return more_info
 #---------------------------------------------------------------------
-def flex_header(text):
-    flex_header = BoxComponent(
-        layout = "vertical",
-        height = "63px",
-        contents = [
-            TextComponent(
-                text = f"你的{text}", 
-                weight = "bold", 
-                size = "lg", 
-                align = "center"
-            )
-        ]
-    )
-    return flex_header
-
-def flex_body(text):
-    flex_body = BoxComponent(
-        layout = "vertical",
-        contents = [
-            TextComponent(
-                text = f"請告訴我你的{text}", 
-                size = "md", 
-                color = "#666666"
-            )
-        ]
-    )
-    return flex_body
-
-def prog_rate(col, q_count):   
-    progress_i = {"attendee_name": 1, "attendee_phone": 2}
-    i = progress_i.get(col, 0)
-    
-    prog_rate = BoxComponent(
-        layout = "vertical",
-        margin = "md",
-        height = "45px",
-        contents = [
-            TextComponent(
-                text = f"{i} / {q_count} ", 
-                weight = "bold", 
-                size = "md"
-            ),
-            BoxComponent(
-                layout = "vertical", 
-                margin = "md", 
-                width = f"{int(i / q_count * 100 + 0.5)}%",
-                background_color = "#3DE1D0",
-                height = "6px"
-            )
-        ]
-    )
-    return prog_rate 
-
-def question(col, progress = 0):
-    text = columns_text[columns.index(col)]
-
-    footer_contents = []
-    if progress:
-        footer_contents.append(prog_rate(col, progress))
-
-    question = FlexSendMessage(
-        alt_text = f"請告訴我你的{text}",
-        contents = BubbleContainer(
-            direction = "ltr",
-            header = flex_header(text),
-            body = flex_body(text),
-            footer = BoxComponent(
-                layout = "vertical",
-                margin = "md",
-                contents = footer_contents
-            )
-        )
-    )
-    return question    
-
 def duplication():
     duplication = FlexSendMessage(
         alt_text = "不可重複報名",
@@ -423,7 +339,7 @@ def edit(text, col):
         color = "#229C8F",
         action = PostbackAction(
             label = f"修改{text}",
-            data = f"修改user_{col}",
+            data = f"修改_users_{col}",
             display_text = f"修改{text}"
         )
     )

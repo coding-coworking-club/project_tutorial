@@ -46,7 +46,7 @@ def update(table, columns, values, condition):
 
     columns = ",".join([f"{col}" for col in columns])
     values = ",".join([f"'{val}'" for val in values]) if values != ["Null"] else "Null"
-    condition_query = " WHERE " + " AND ".join(condition)
+    condition_query = "WHERE " + " AND ".join(condition)
     
     if "," not in columns:
         postgres_update_query = f"""UPDATE {table} SET {columns} = {values} {condition_query}"""
