@@ -1,18 +1,22 @@
 import os
 import sys
-from selenium import webdriver
 from time import sleep
+
 from bs4 import BeautifulSoup
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+
 class AbsInterface:
-	def __init__(self, classname=None):
-		self.process = classname
-	
-	def run(self):
-		self.process().run()
+    def __init__(self, classname=None):
+        self.process = classname
+
+    def run(self):
+        self.process().run()
+
 
 # class Scraper(ABC):
 
@@ -25,7 +29,7 @@ class AbsInterface:
 #         chromedriver_path = os.path.join(current_directory, "resource/chromedriver")
 #         driver = webdriver.Chrome(executable_path=chromedriver_path, options=options)
 # 		driver.implicitly_wait(10) # seconds
-    
+
 #     def file_path(self):
 #         file_path = os.path.abspath(os.getcwd())
 #         return file_path
@@ -33,8 +37,6 @@ class AbsInterface:
 # 	def run(self):
 # 		pass
 class Scraper:
-
-
     def __init__(self):
 
         self.options = self._set_options()
@@ -49,18 +51,20 @@ class Scraper:
         self.options.add_argument("--headless")
 
     def _set_driver(self):
-        self.driver = webdriver.Chrome(executable_path=chromedriver_path, options=self.options)
+        self.driver = webdriver.Chrome(
+            executable_path=chromedriver_path, options=self.options
+        )
 
     def get_header(cls):
         cls.title = cls.driver.get(cls.home)
         return cls.title
-    
+
     def scroll_down(self):
         for times in range(1, 10):
             self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
             sleep(1)
             print(f"scroll down {times} times")
-    
+
     def get_all_item_page(self):
         pass
 
@@ -76,7 +80,6 @@ class Scraper:
     def get_item_picture(self):
         pass
 
-
     def get_item_color(self):
         pass
 
@@ -85,7 +88,6 @@ class Scraper:
 
 
 class MIU(Scraper):
-
     def __init__(self, home_url) -> None:
         self.home = home_url
         super().__init__()
@@ -121,6 +123,7 @@ class MIU(Scraper):
 
     def get_item_size(self):
         pass
+
 
 home = "https://www.miu-star.com.tw/"
 scrpaer_miu = MIU(home)

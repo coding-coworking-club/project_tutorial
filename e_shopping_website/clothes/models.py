@@ -6,7 +6,6 @@ class Website(models.Model):
     name = models.CharField(max_length=20)
     home = models.URLField(blank=True, null=True)
 
-
     def __str__(self):
         return self.name
 
