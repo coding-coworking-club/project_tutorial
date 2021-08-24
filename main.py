@@ -9,19 +9,15 @@ import random
 
 # ---------------------------------------------------------------------
 # 修改過的mainwin，如果是class照常運作，如果是instance則跳過class(self)
-# add home page (should be menu page in future)
 class mainwin(tk.Tk):
     def __init__(self):
-        tk.Tk.__init__(self)
+        super().__init__()
         self._frame = None
-        self.home_page = StartPage(self)
-        self.switch_frame(self.home_page)
+        self.switch_frame(StartPage)
 
-    def switch_frame(self, frame_class, set_home=False):
+    def switch_frame(self, frame_class):
         if self._frame is not None:
             self._frame.destroy()
-        
-
         if type(frame_class) == type: 
             new_frame = frame_class(self)
             self._frame = new_frame
@@ -30,11 +26,7 @@ class mainwin(tk.Tk):
         else:
             self._frame = frame_class
             self._frame.pack()
-        
-        if set_home:
-            self.home_page = self._frame
-    def back2home(self):
-        self.switch_frame(self.home_page)
+
 
 
 # 測試實體化的Theme class能否讓修改過的mainwin正常運作
@@ -63,20 +55,6 @@ class StartPage(tk.Frame):
         tk.Label(self, text='百萬大歌星', background='beige', height=2, font=('微軟正黑體', 24, "bold")).place(x=220, y=90)
         tk.Button(self, text="遊戲規則", font=('微軟正黑體', 14, "bold"), relief ="groove", 
         command=lambda: master.switch_frame(theme2)).place(x=338, y=220)
-
-class RulePage(tk.Frame):
-    def __init__(self, master): #, bg='#F08080'
-        tk.Frame.__init__(self, master, width=600, height=400)
-        tk.Frame.configure(self,bg='beige')
-        self.pack_propagate(0)
-        tk.Label(self, text="遊戲規則介紹", font=('微軟正黑體', 18, "bold"),
-                 height=2, bg='beige').pack(side="top", fill="both")
-        
-        rule_content = open('rule.txt').read()
-        tk.Label(self, text=rule_content, bg='beige',
-                 font=('微軟正黑體', 14), justify = tk.LEFT).pack(padx=5, pady=5)
-        tk.Button(self, text="回到主畫面", font=('微軟正黑體', 12, "bold"), relief ="groove",
-                  command=lambda: master.back2home).pack(anchor=tk.S, padx=5, pady=5)
 class Theme2(tk.Frame):
     def __init__(self, master, theme_name):
         super().__init__(master)
