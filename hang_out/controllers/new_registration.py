@@ -1,6 +1,6 @@
 from models import CallDatabase
 from templates import flexmsg_registration
-from controllers import reset, verify
+from controllers import reset, basic_info, verify
 from linebot.models import TextSendMessage
 
 
@@ -21,7 +21,7 @@ def activity_for_registration(today_tw, activity_type):
 def activity_detail(activity_id):
     #根據該活動的編號找出活動資訊
     condition = [f"id = {activity_id}"]
-    activity_info = basic_info.basic_info(init_condition)[0]
+    activity_info = basic_info.basic_info(condition)[0]
     owner_user_id = CallDatabase.get_data("activity", ["user_id"], condition = condition, all_data = False)[0]
     
     condition = [f"id = {owner_user_id}"]
@@ -44,15 +44,15 @@ def new_registration(line_id, user_id, activity_id, user_info, user_condition, i
             CallDatabase.insert("users", columns = ["line_id"], values = [line_id])
             user_id = CallDatabase.get_data("users", ["id"], condition = user_condition, all_data = False)[0]
             init_condition = ["condition = 'initial'", f"user_id = {user_id}"]
-            user_info = CallDatabase.get_data("users", user_columns, condition = user_condition, all_data = False)
 
         #在報名資訊資料庫創建一列，準備寫入使用者回答的資訊該列報名狀態為initial
         columns = ["activity_id", "condition", "user_id"]
         values = [activity_id, "initial", user_id]
         CallDatabase.insert("registration", columns = columns, values = values)
-        registration_id = CallDatabase.get_data("registration", ["id"], condition = init_condition, all_data = False)[0]
         
-        data_registration = user_info + (activity_id, registration_id)
+        registration_info = basic_info.basic_info(init_condition)[1]
+        data_registration = user_info + registration_info
+        
         msg = verify.next_msg("registration", data_registration, progress = 2)   #to-do 進度條待改
     return msg
 

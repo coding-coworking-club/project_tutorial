@@ -10,31 +10,37 @@ def choose_record_type(user_id, status):
 
 def activity_record(user_id, record_type, today_tw):
     # 依照活動時間篩選為已結束或進行中
-    condition = ["condition <> 'initial'", f"user_id = '{user_id}'"]
-    condition.append(f"activity_date < '{today_tw}'") if record_type == "已結束" else condition.append(f"activity_date >= '{today_tw}'")
+    if user_id:
+        condition = ["condition <> 'initial'", f"user_id = '{user_id}'"]
+        condition.append(f"activity_date < '{today_tw}'") if record_type == "已結束" else condition.append(f"activity_date >= '{today_tw}'")
 
-    # 取得開團紀錄
-    activity_info = CallDatabase.get_data("activity", ["id", "activity_name"], condition = condition, order = "activity_date", all_data = True)
-    msg = flexmsg_record.record_list("開團", activity_info, record_type)
+        # 取得開團紀錄
+        activity_info = CallDatabase.get_data("activity", ["id", "activity_name"], condition = condition, order = "activity_date", all_data = True)
+        msg = flexmsg_record.record_list("開團", activity_info, record_type)
+    else:
+        msg = flexmsg_record.record_list("開團", None, record_type)  
     return msg
 
 def registration_record(user_id, record_type, today_tw):
     # 依照活動時間篩選為已結束或進行中
-    condition = ["condition = 'closed'", f"user_id = '{user_id}'"]
-    
-    # 取得報名紀錄   
-    registration_data = CallDatabase.get_data("registration", ["activity_id", "id"], condition = condition,  all_data = True)
-    all_activity_id = [data[0] for data in registration_data]
-    activity_name_date = [CallDatabase.get_data("activity", ["activity_name", "activity_date"], condition = [f"id = {activity_id}"], all_data = False) for activity_id in all_activity_id]
-    registration_data = [data[0] + list(data[1]) for data in zip(registration_data, activity_name_date)]  # activity_id, registration_id, activity_name
-    if record_type == "已結束":
-        registration_data = [data for data in registration_data if data[3] < today_tw]
+    if user_id:
+        condition = ["condition = 'closed'", f"user_id = '{user_id}'"]
+        
+        # 取得報名紀錄   
+        registration_data = CallDatabase.get_data("registration", ["activity_id", "id"], condition = condition,  all_data = True)
+        all_activity_id = [data[0] for data in registration_data]
+        activity_name_date = [CallDatabase.get_data("activity", ["activity_name", "activity_date"], condition = [f"id = {activity_id}"], all_data = False) for activity_id in all_activity_id]
+        registration_data = [data[0] + list(data[1]) for data in zip(registration_data, activity_name_date)]  # activity_id, registration_id, activity_name
+        if record_type == "已結束":
+            registration_data = [data for data in registration_data if data[3] < today_tw]
+        else:
+            registration_data = [data for data in registration_data if data[3] >= today_tw]
+        registration_data = sorted(registration_data, key = lambda x:x[3])    
+        # 回傳回傳報名列表
+        print(registration_data)  # activity_id, registration_id, activity_name, activity_date
+        msg = flexmsg_record.record_list("報名", registration_data, record_type) 
     else:
-        registration_data = [data for data in registration_data if data[3] >= today_tw]
-    registration_data = sorted(registration_data, key = lambda x:x[3])    
-    # 回傳回傳報名列表
-    print(registration_data)  # activity_id, registration_id, activity_name, activity_date
-    msg = flexmsg_record.record_list("報名", registration_data, record_type)    
+        msg = flexmsg_record.record_list("報名", None, record_type) 
     return msg
 
 def activity_information(activity_id):

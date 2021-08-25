@@ -66,14 +66,15 @@ def page_button(status, new_page, record_type, i):
     return page_button
 
 def record_list(status, data, record_type, i = 0):
-    if i < 0:
-        i = 0
-    elif i >= len(data):
-        i -= 8
-    
+
     if data:
+        if i < 0:
+            i = 0
+        elif i >= len(data):
+            i -= 8
+
         index_content = [activity_in_index(status, row) for row in data[i: i+8]]  
-        glist_index = BubbleContainer(
+        index = BubbleContainer(
             size = "kilo",
             direction = "ltr",
             header = BoxComponent(
@@ -102,7 +103,7 @@ def record_list(status, data, record_type, i = 0):
             )
         )
     else:
-        glist_index = BubbleContainer(
+        index = BubbleContainer(
             direction = "ltr",
             body = BoxComponent(
                 size = "xs",
@@ -120,7 +121,7 @@ def record_list(status, data, record_type, i = 0):
 
     record_list = FlexSendMessage(
         alt_text = f"我的{status}",
-        contents = glist_index
+        contents = index
     )
 
     return record_list

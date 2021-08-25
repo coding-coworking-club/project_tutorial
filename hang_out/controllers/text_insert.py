@@ -1,7 +1,8 @@
 from models import CallDatabase
 from templates import flexmsg_activity
-from controllers import verify
+from controllers import verify, basic_info
 from linebot.models import TextSendMessage
+import psycopg2
 
 activity_columns = flexmsg_activity.columns
 user_columns = ["name", "phone"]
@@ -33,6 +34,9 @@ def text_insert(user_text, user_id, activity_info, user_info, registration_info,
             msg = verify.next_msg(status, data, progress)
 
         except psycopg2.DataError:
+            DATABASE_URL = "postgres://kfcgjdnbgqalif:503a165ffdfaed9dde93a0196045fe9db0ea2464206a1c129af5580932ccdab5@ec2-54-227-246-76.compute-1.amazonaws.com:5432/d107jas11a6r56"
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            cursor = conn.cursor()
             msg = TextSendMessage(text = "請重新輸入")  
 
     return msg

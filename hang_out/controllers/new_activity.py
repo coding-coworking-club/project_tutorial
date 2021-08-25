@@ -1,6 +1,6 @@
 from models import CallDatabase
 from templates import flexmsg_activity
-from controllers import reset, verify, update_photo
+from controllers import reset, basic_info, verify, update_photo
 from linebot.models import TextSendMessage
 import datetime as dt
 
