@@ -142,8 +142,6 @@ class ScraperConfig(BaseConfig):
 if __name__ == "__main__":
     config = ScraperConfig("./config/config.json")
     print(config.as_dict())
-    print(config["CHROMEDRIVER_PATH"])
-    print(config["TEST"])
     ck = {"TEST": False}
     config.override(config, ck)
     print(config["TEST"])
