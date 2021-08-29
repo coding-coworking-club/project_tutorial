@@ -1,5 +1,0 @@
-{
-	"CHROMEDRIVER_PATH": "resource/chromedriver",
-	"HOME_PAGE": "https://",
-	"TEST": "hello"
-}
