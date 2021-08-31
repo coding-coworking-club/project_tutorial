@@ -11,7 +11,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from toolbox.chrome_driver import MacOSChromeDriver
 from config.system_setting import ScraperConfig
 
-
 logger = logging.getLogger(__name__)
 
 class AbsInterface:
@@ -42,7 +41,7 @@ class Scraper:
         )
         return driver
 
-    def get_home(self):
+    def _get_home(self):
         self.driver.get(self.home)
         
     def get_header(self):
@@ -56,13 +55,13 @@ class Scraper:
                 sleep(1)
                 print(f"scroll down {count} times")
 
-    def get_all_item_page(self):
+    def _get_all_item_page(self):
         pass
 
-    def get_item_list(self):
+    def _get_item_list(self):
         pass
 
-    def git_item_info(self):
+    def _git_item_info(self):
         pass
 
     def get_item_name(self):
@@ -84,13 +83,13 @@ class MIUSTAR(Scraper):
 
         self.config = ScraperConfig(f"./config/config-{__class__.__name__.lower()}.json")
         self.home = self.config["HOME_PAGE"]
-        self.get_home()
-        self.get_all_item_page()
+        self._get_home()
+        self._get_all_item_page()
         self._scroll_down()
-        self.get_item_list()
-        self.get_item_info()
+        self._get_item_list()
+        self._get_item_info()
 
-    def get_home(self):
+    def _get_home(self):
         print(f"start to get home: {self.home}")
         self.driver.get(self.home)
         close_button = WebDriverWait(self.driver, 50).until(
@@ -104,8 +103,7 @@ class MIUSTAR(Scraper):
         print(f"click {contract.text}")
         contract.click()
 
-
-    def get_all_item_page(self):
+    def _get_all_item_page(self):
         search_input = WebDriverWait(self.driver, 50).until(
             EC.presence_of_element_located((By.TAG_NAME, "h2"))
         )
@@ -128,7 +126,7 @@ class MIUSTAR(Scraper):
         search_input.click()
         sleep(1)
 
-    def get_item_list(self):
+    def _get_item_list(self):
         #把本頁搜尋商品的網址截下來
         soup = BeautifulSoup(self.driver.page_source,"html.parser")
         item_list = soup.find_all("li",{"class":"column-grid-container__column"})
@@ -137,7 +135,7 @@ class MIUSTAR(Scraper):
             self.item_list_path.append(item.a["href"])
         print(self.item_list_path)
 
-    def get_item_info(self):
+    def _get_item_info(self):
         #新的分頁
         for path in self.item_list_path:
             url = f"{self.config['HOME_PAGE']}{path}"
@@ -191,14 +189,3 @@ class MIUSTAR(Scraper):
 
 if __name__ == "__main__":
     miustart_scraper = MIUSTAR()
-# title = miustart_scraper.get_header()
-# print(title)
-# miustart_scraper.get_all_item_page()
-# miustart_scraper.scroll_down()
-
-
-# ProductA = Scraper()
-
-# create_product_a = AbsInterface()
-# create_product_a.process = ProductA
-# create_product_a.run()
