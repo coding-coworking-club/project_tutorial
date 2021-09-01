@@ -67,5 +67,3 @@ def delete(table, condition):
     
     cursor.execute(postgres_delete_query)
     conn.commit()
-
-

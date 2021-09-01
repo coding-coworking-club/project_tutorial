@@ -35,4 +35,3 @@ def duplicate_registration(activity_id, user_id):
     attendee_user_id = [data[0] for data in attendee_user_id]
 
     return user_id in attendee_user_id #如果使用者輸入的電話重複則報名失敗
-

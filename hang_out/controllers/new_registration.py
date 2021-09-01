@@ -103,3 +103,4 @@ def cancel_registration(registration_id, activity_id):
     # 回應 取消成功
     msg = TextSendMessage(text = "取消成功！")        
     return msg
+    

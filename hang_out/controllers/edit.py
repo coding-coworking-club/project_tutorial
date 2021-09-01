@@ -8,3 +8,4 @@ def edit(table, column, init_condition, user_condition, activity_info):
     CallDatabase.update(table, columns = [column], values = ["Null"], condition = condition)
     msg = flexmsg_question.question(column, progress = 0, activity_date = activity_date)
     return msg
+    

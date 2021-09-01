@@ -8,4 +8,3 @@ def reset(user_id):
         CallDatabase.delete("registration", condition = init_condition)   # 刪除報名表單中未完成的資料
     
         print("刪除未成功資料")
-

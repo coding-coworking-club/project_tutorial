@@ -40,3 +40,4 @@ def photo(photo_content, imgur_config, activity_info, init_condition, user_id):
         msg = "現在不用傳圖片給我!"
 
     return msg    
+    

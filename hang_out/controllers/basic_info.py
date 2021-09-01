@@ -25,3 +25,4 @@ def basic_info(init_condition):
 def user_info(user_condition):
     user_info = CallDatabase.get_data("users", user_columns, condition = user_condition, all_data = False)
     return user_info
+    
