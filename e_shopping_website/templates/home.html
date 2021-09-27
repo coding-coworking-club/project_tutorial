@@ -1,0 +1,228 @@
+<!-- home.html -->
+
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        
+        <title>clothes</title>
+        
+        <style>
+            
+            /* import font */
+
+            @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+            /* background */
+
+            body {
+               background-color: rgb(253, 251, 245);
+            }
+
+            /* head title */
+
+            h1 {
+                text-align: center;
+                font-size: 44px;
+                font-family: 'Noto Sans TC', sans-serif;
+                color: rgb(65, 61, 48);
+                font-weight: 600;
+            }
+
+            /* search bar */
+
+            .searchbar {
+                padding: 20px;
+                box-sizing: border-box;
+                background-color: rgb(238, 230, 204);
+                text-align: center;
+                font-family: 'Noto Sans TC', sans-serif;
+            }
+
+            .notice {
+                font-size: 14px;
+                color: rgb(145, 143, 143);
+                font-weight: 400;
+            }
+
+            .allbutton {
+                width:auto;
+                height: 30px;
+                font-size: 16px;
+                color: rgb(145, 143, 143);
+                font-weight: 400;
+                text-decoration: underline;
+                border-style: none;
+                background-color: rgb(238, 230, 204);                
+                outline: none;
+            }
+
+            .shopbutton {
+                width:auto;
+                height: 30px;
+                border-color: rgb(202, 202, 202);
+                border-width: 2px;
+                border-style: solid;
+                border-radius: 5px;
+                background-color: rgb(252, 252, 252);
+                color: rgb(110, 108, 108);
+            }
+
+            /* about box */
+
+            .products {
+                padding: 3rem;
+                font-family: 'Noto Sans TC', sans-serif;
+            }
+
+            .box {
+                width: auto;
+                display: inline-table;
+                padding-bottom: 1rem;
+            }
+
+            /* about link */
+
+            a:link {
+                text-decoration: none;
+            }
+
+            a:visited {
+                text-decoration: none;
+            }
+             
+            a:hover {
+                text-decoration: underline;
+            }
+            
+            a:active {
+                text-decoration: underline;
+            }
+
+            /* detail style */
+
+            .shop {
+                padding-bottom: 5px;
+                max-width: 210px;
+                text-align: center;
+                font-size: 14px;
+                color:rgb(110, 108, 108);
+                font-weight: 400;
+            }
+
+            .title {
+                max-width: 210px;
+                text-align: center;
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+            .price {
+                max-width: 210px;
+                text-align: center;
+                font-size: 16px;
+                color:brown;
+                font-weight: 600;
+            }
+
+            .detail {
+                max-width: 210px;
+                text-align: center;
+                font-size: 14px;
+                color:rgb(110, 108, 108);
+                font-weight: 500;
+            }
+        
+        </style>
+    
+        <script type="text/javascript">
+
+        function all_button() {
+            elements = document.getElementsByClassName('box')
+            for (let i = 0; i < elements.length; i++) {
+                element = elements[i]
+                element.style.display = "inline-table";
+            }
+        }
+
+        function price_filter() {
+            elements = document.getElementsByClassName('box')
+            prices = document.getElementsByClassName('price')
+            a = parseInt(document.getElementById('price_input1').value)
+            b = parseInt(document.getElementById('price_input2').value)
+            for (let i = 0; i < elements.length; i++) {
+                element = elements[i]
+                price_tag = prices[i]
+                price = parseInt(price_tag.innerText.slice(4,))
+                if (price >= a && price <= b) {
+                    element.style.display = "inline-table";
+                } else {
+                    element.style.display = "none";
+                }
+            }
+            document.getElementById('price_input1').value = ''
+            document.getElementById('price_input2').value = ''
+        }
+
+        function shop_filter(shop) {
+            elements = document.getElementsByClassName('box')
+            for (let i = 0; i < elements.length; i++) {
+                element = elements[i]
+                if (element.classList.contains(shop)) {
+                    element.style.display = "inline-table";
+                } else {
+                    element.style.display = "none";
+                }
+            }
+        }
+        
+        </script>
+
+    </head>
+    
+    <body>
+        <h1>網 購 真 心 不 累</h1>
+        <div class="searchbar">
+            <span name="search_price" style="padding-right: 5rem">
+                <span class="notice">價錢：</span>
+                <span class="notice">NT$</span>
+                <input id="price_input1" type="text" size="5" />
+                <span class="notice"> - NT$</span>
+                <input id="price_input2" type="text" size="5" />
+                <input type="button" onclick="price_filter()" value="搜索" />
+            </span>
+            <span name="search_shop" style="padding-right: 6rem">
+                <span class="notice">店家：</span>
+                <input type="button" onclick="shop_filter('Meier.Q')" value="Meier.Q" class="shopbutton" />
+                <input type="button" onclick="shop_filter('GENQUO')" value="GENQUO" class="shopbutton" />
+                <input type="button" onclick="shop_filter('東京著衣')" value="東京著衣" class="shopbutton" />
+                <input type="button" onclick="shop_filter('EYESCREAM')" value="EYESCREAM" class="shopbutton" />
+                <input type="button" onclick="shop_filter('MIUSTAR')" value="MIUSTAR" class="shopbutton" />
+                <input type="button" onclick="shop_filter('Net')" value="Net" class="shopbutton" />
+            </span>
+            <span name="search_all">
+                <input type="button" onclick="all_button()" value="返回所有商品" class="allbutton" />
+            </span>
+        </div>
+        <div class="container">
+            <div class="webshop">
+                {% for webshop in website_list %}
+                <ul class="box {{ webshop.name }}">
+                    <div class="title"><a href="{{ webshop.home }}" target="_blank">{{ webshop.name }}</a></div>
+                </ul>
+                {% endfor %}
+            </div>
+            <div class="products">
+                {% for post in post_list %}
+                <ul class="box {{ post.shop }} {{ post.price }}">
+                    <div class="shop">{{ post.shop }}</div>
+                    <div class="image"><a href="{{ post.link }}" target="_blank"><img src="{{ post.image }}" width="210" height="280"></a></div>
+                    <div class="title"><a href="{{ post.link }}" target="_blank">{{ post.title }}</a></div>
+                    <div class="price">NT$ {{ post.price }}</div>
+                    <div class="detail">{{ post.color }} * {{ post.size }}</div>
+                </ul>
+                {% endfor %}
+            </div>
+        </div>
+     </body>
+</html>
