@@ -37,12 +37,9 @@ A project contains web scraper for youtube video comment with wordcloud visualiz
 
 ## Project Orginaztion
 
-        ├── data
-        ├── reports
+        ├── notebook
         ├── src
-        │   ├── init_.py
         │   ├── scraper.py
-        │   ├── text_parser.py
         │   ├── main.py
         │   └── config.ini
         ├── Pipfile
