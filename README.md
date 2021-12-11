@@ -9,4 +9,3 @@
 ## Completed
 - 2021.01 [生活機能好？有多好？](https://medium.com/ccclub/project-tutorial-how-convenient-is-here-51efda71a103) 
 - 2021.05 [髒話價目表](https://medium.com/ccclub/project-tutorial-swear-price-2d074f7a6751)
-

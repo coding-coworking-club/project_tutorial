@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+jieba = "*"
+wordcloud = "*"
+snownlp = "*"
+requests = "*"
+black = "*"
+pandas = "*"
+numpy = "*"
+matplotlib = "*"
+seaborn = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
