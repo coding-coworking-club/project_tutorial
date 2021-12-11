@@ -7,6 +7,12 @@ name = "pypi"
 jieba = "*"
 wordcloud = "*"
 snownlp = "*"
+requests = "*"
+black = "*"
+pandas = "*"
+numpy = "*"
+matplotlib = "*"
+seaborn = "*"
 
 [dev-packages]
 
